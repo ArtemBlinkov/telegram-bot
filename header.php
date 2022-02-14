@@ -20,5 +20,3 @@ require_once(__DIR__ . '/classes/Lang.php');
 require_once(__DIR__ . '/templates/Template.php');
 require_once(__DIR__ . '/templates/FeedbackTemplate.php');
 require_once(__DIR__ . '/templates/CommentTemplate.php');
-
-//Модели
