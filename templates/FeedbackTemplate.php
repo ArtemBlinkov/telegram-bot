@@ -1,7 +1,7 @@
 <?php
 
 
-namespace TelegramBot;
+namespace Templates;
 
 use TelegramBot\Api\Exception;
 

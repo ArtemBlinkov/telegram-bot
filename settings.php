@@ -25,6 +25,7 @@ const
         'user'     => 'u1416043_tbot',
         'password' => 'razor2517',
         'dbname'   => 'u1416043_tbot_base',
+        'host' => 'localhost'
     ];
 
 /**

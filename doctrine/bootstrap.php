@@ -2,18 +2,22 @@
 
 //composer
 require_once(__DIR__ . '/../vendor/autoload.php');
-//logger
-require_once(__DIR__ . '/../classes/Logger.php');
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
 try {
 
-    $paths = [$_SERVER['DOCUMENT_ROOT'] . "/models"];
+    // Create a simple "default" Doctrine ORM configuration for Annotations
+    $paths = __DIR__ . '/models';
     $isDevMode = true;
+    $proxyDir = null;
+    $cache = null;
+    $useSimpleAnnotationReader = false;
 
-    $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+    $config = Setup::createAnnotationMetadataConfiguration([$paths], $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
+
+    // obtaining the entity manager
     $entityManager = EntityManager::create(DB, $config);
 
 }

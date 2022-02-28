@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd6fcb0acf66328b55518c461a0d2e49a8f43dd58',
+    'reference' => '3f795e2996977f8a404697fec55dc02f7b789b42',
     'name' => '__root__',
   ),
   'versions' => 
@@ -44,7 +44,16 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd6fcb0acf66328b55518c461a0d2e49a8f43dd58',
+      'reference' => '3f795e2996977f8a404697fec55dc02f7b789b42',
+    ),
+    'doctrine/annotations' => 
+    array (
+      'pretty_version' => '1.13.2',
+      'version' => '1.13.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '5b668aef16090008790395c02c893b1ba13f7e08',
     ),
     'doctrine/cache' => 
     array (
@@ -181,6 +190,13 @@ private static $installed = array (
       ),
       'reference' => 'd11b50ad223250cf17b86e38383413f5a6764bf8',
     ),
+    'psr/cache-implementation' => 
+    array (
+      'provided' => 
+      array (
+        0 => '1.0|2.0',
+      ),
+    ),
     'psr/container' => 
     array (
       'pretty_version' => '1.1.1',
@@ -254,6 +270,13 @@ private static $installed = array (
         0 => '1.0|2.0',
       ),
     ),
+    'psr/simple-cache-implementation' => 
+    array (
+      'provided' => 
+      array (
+        0 => '1.0|2.0',
+      ),
+    ),
     'ralouphie/getallheaders' => 
     array (
       'pretty_version' => '3.0.3',
@@ -262,6 +285,31 @@ private static $installed = array (
       array (
       ),
       'reference' => '120b605dfeb996808c31b6477290a714d356e822',
+    ),
+    'symfony/cache' => 
+    array (
+      'pretty_version' => 'v5.4.3',
+      'version' => '5.4.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '4178f0a19ec3f1f76e7f1a07b8187cbe3d94b825',
+    ),
+    'symfony/cache-contracts' => 
+    array (
+      'pretty_version' => 'v2.5.0',
+      'version' => '2.5.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'ac2e168102a2e06a2624f0379bde94cd5854ced2',
+    ),
+    'symfony/cache-implementation' => 
+    array (
+      'provided' => 
+      array (
+        0 => '1.0|2.0',
+      ),
     ),
     'symfony/console' => 
     array (
@@ -361,6 +409,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '92043b7d8383e48104e411bc9434b260dbeb5a10',
+    ),
+    'symfony/var-exporter' => 
+    array (
+      'pretty_version' => 'v5.4.3',
+      'version' => '5.4.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'b199936b7365be36663532e547812d3abb10234a',
     ),
     'telegram-bot/api' => 
     array (

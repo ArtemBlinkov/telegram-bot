@@ -1,12 +1,10 @@
 <?php
 
-namespace TelegramBot;
-
 use TelegramBot\Api\Exception;
 
 //Проверка наличия константы стандартного языка
 if (!defined(LANG)) {
-    define("TelegramBot\LANG", 'ru');
+    define("LANG", 'ru');
 }
 
 class Lang
@@ -32,7 +30,9 @@ class Lang
 
     public static function IncludeFile(string $file, string $lang = LANG) : array
     {
+        // Получаем текущее расположение каталога с языками
         $dir = self::get_lang_path();
+        // Создаём путь
         $file_path = $dir . $lang . '/' . $file;
 
         if (is_file($file_path))
@@ -60,9 +60,12 @@ class Lang
 
     public function IncludeAllFiles(string $lang = LANG) : array
     {
+        // Получаем текущее расположение каталога с языками
         $dir = self::get_lang_path();
+        // Создаём путь
         $path = $dir . $lang . '/';
-        $lang_list = array();
+        // Хранилище для языковых фраз
+        $lang_list = [];
 
         //Скнируем папку текущего языка и подключаем все файлы, собираем их содержимое в массив
         if ($handle = opendir($path))

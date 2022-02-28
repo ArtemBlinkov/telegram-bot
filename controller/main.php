@@ -4,7 +4,6 @@ require_once(__DIR__ . '/../header.php');
 
 use TelegramBot\Api\Client;
 use TelegramBot\Api\Exception;
-use TelegramBot\Lang;
 
 try {
 

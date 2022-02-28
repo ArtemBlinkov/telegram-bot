@@ -4,6 +4,21 @@
         "ext-curl": "*",
         "ext-json": "*",
         "doctrine/orm": "^2.11",
+        "doctrine/dbal": "^3.2",
+        "doctrine/annotations": "1.13.2",
+        "symfony/cache": "^5.4",
         "guzzlehttp/guzzle": "^7.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Models\\": "models/",
+            "Templates\\": "templates/"
+        },
+        "classmap": [
+            "classes/"
+        ],
+        "files": [
+            "settings.php"
+        ]
     }
 }

@@ -2,9 +2,8 @@
 //Подключаем header
 require_once(__DIR__ . '/../../header.php');
 
-use TelegramBot\Lang;
 use TelegramBot\Api\BotApi;
-use TelegramBot\FeedbackTemplate;
+use Templates\FeedbackTemplate;
 
 try {
 
