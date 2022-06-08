@@ -34,7 +34,7 @@ try {
             if (empty($matches))
             {
                 $bot->sendMessage($message->getChat()->getId(), $lang['empty_command']);
-                return;
+                return false;
             }
             else
             {
@@ -45,7 +45,7 @@ try {
                 if (!$command[$matches[1]])
                 {
                     $bot->sendMessage($message->getChat()->getId(), $lang['undefined_command']);
-                    return;
+                    return false;
                 }
             }
         }
@@ -53,6 +53,7 @@ try {
         {
             // отправляем сообщение об ошибке доступа
             $bot->sendMessage($message->getChat()->getId(), $lang['no_access']);
+            return false;
         }
 
     }, function () {
@@ -63,7 +64,7 @@ try {
     require_once('base.php');
 
     // подключаем контроллер отработки ответа на отзыв
-    require_once('answer.php');
+    require_once('comment.php');
 
     // запуск бота
     $bot->run();

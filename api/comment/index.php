@@ -34,8 +34,8 @@ try {
             //Добавим клавиатуру
             $keyboard = new InlineKeyboardMarkup([
                 [
-                    ['text' => $lang['key-add'], 'switch_inline_query_current_chat' => '/answer/' . $data['domain'] . '/' . $data['id'] . '/'],
-                    ['text' => $lang['key-delete'], 'callback_data' => '/delete/' . $data['domain'] . '/' . $data['id']]
+                    ['text' => $lang['key-add'], 'switch_inline_query_current_chat' => '/answer ' . $data['domain'] . ':' . $data['id']],
+                    ['text' => $lang['key-delete'], 'switch_inline_query_current_chat' => '/delete ' . $data['domain'] . ':' . $data['id']]
                 ]
             ]);
 
@@ -54,9 +54,6 @@ try {
         {
             // Установим код ответа - 400 неверный запрос
             http_response_code(400);
-
-            //TODO: Убрать
-            Logger::Debug(PASS);
 
             // Возвращаем ответ
             echo json_encode(["message" => "Pass wrong!", "pass" => $data['pass']]);
