@@ -11,11 +11,11 @@
     },
     "autoload": {
         "psr-0": {
-            "Models\\": "models/",
-            "Templates\\": "templates/"
+            "": "doctrine/src/"
         },
         "classmap": [
-            "classes/"
+            "classes/",
+            "templates/"
         ],
         "files": [
             "settings.php"

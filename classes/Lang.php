@@ -3,7 +3,7 @@
 use TelegramBot\Api\Exception;
 
 //Проверка наличия константы стандартного языка
-if (!defined(LANG)) {
+if (!defined('LANG')) {
     define("LANG", 'ru');
 }
 
@@ -37,7 +37,7 @@ class Lang
 
         if (is_file($file_path))
         {
-            return require_once($file_path);
+            return include $file_path;
         }
         else
         {

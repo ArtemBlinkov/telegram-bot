@@ -9,6 +9,7 @@
           </mappings>
           <excludedPaths>
             <excludedPath path="/logs" />
+            <excludedPath path="/test.php" />
           </excludedPaths>
         </serverdata>
       </paths>

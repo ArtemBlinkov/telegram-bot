@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'start' => 'Hello!',
+    'start' => 'O! Hi!',
     //-------------------------
     'help' => 'Command:
-/help - help output',
+        /help - help output',
     //-------------------------
 ];
