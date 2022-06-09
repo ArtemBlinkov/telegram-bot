@@ -15,59 +15,88 @@ try {
     // инициализация телеграмм бота
     $bot = new Client(APIKEY);
 
-    // точка входа, обработка прав и ошибок
-    $bot->on(function (Update $update) use ($bot)
+    // проверяем данные post на наличие
+    if ($bot->getRawBody())
     {
-        // получаем данные от телеграмма
-        $message = $update->getMessage();
-
-        // подключение языкового файла
-        $lang = Lang::IncludeFile('main.php', $message->getFrom()->getLanguageCode());
-
-        // проверяем, что команды поступают от меня
-        if ($message->getFrom()->getId() == ME)
+        /**
+         * Обработка прав доступа и ошибок, уникальных ответов
+         */
+        $bot->on(function (Update $update) use ($bot)
         {
-            // проверяем запрос на наличие команды (синтаксис)
-            preg_match(Client::REGEXP, $message->getText(), $matches);
+            // получаем данные от телеграмма
+            $message = $update->getMessage();
 
-            // если в запросе нет команды - отправить ошибку
-            if (empty($matches))
+            // подключение языкового файла
+            $lang = Lang::IncludeFile('main.php', $message->getFrom()->getLanguageCode());
+
+            // проверяем, что команды поступают от меня
+            if ($message->getFrom()->getId() == ME)
             {
-                $bot->sendMessage($message->getChat()->getId(), $lang['empty_command']);
-                return false;
+                // проверяем запрос на наличие команды (синтаксис)
+                preg_match(Client::REGEXP, $message->getText(), $matches);
+
+                // создаём объект бд
+                $db = new CommentRecord();
+
+                // если в запросе нет команды - отправить ошибку
+                if (empty($matches))
+                {
+                    // проверяем, что в данный момент нет комментариев, ожидающих ответа и выводим ошибку
+                    if (!$db->checkComment())
+                    {
+                        $bot->sendMessage($message->getChat()->getId(), $lang['empty_command']);
+                        return false;
+                    }
+                }
+                else
+                {
+                    // проверям комментарии в бд, если есть комментарии со статусом wait, игнорируем другие команды и ждём ответа
+                    if ($db->checkComment())
+                    {
+                        $bot->sendMessage($message->getChat()->getId(), $lang['wait_answer']);
+                        return false;
+                    }
+                    else
+                    {
+                        // получаем список команд из языкового файла
+                        $command = Lang::IncludeFile('command.php', $message->getFrom()->getLanguageCode());
+
+                        // ищем команду в массиве, если её нет, отправляем ошибку
+                        if (!$command[$matches[1]]) {
+                            $bot->sendMessage($message->getChat()->getId(), $lang['undefined_command']);
+                            return false;
+                        }
+                    }
+                }
             }
             else
             {
-                // получаем список команд из языкового файла
-                $command = Lang::IncludeFile('command.php', $message->getFrom()->getLanguageCode());
-
-                // ищем команду в массиве, если её нет, отправляем ошибку
-                if (!$command[$matches[1]])
-                {
-                    $bot->sendMessage($message->getChat()->getId(), $lang['undefined_command']);
-                    return false;
-                }
+                // отправляем сообщение об ошибке доступа
+                $bot->sendMessage($message->getChat()->getId(), $lang['no_access']);
+                return false;
             }
-        }
-        else
-        {
-            // отправляем сообщение об ошибке доступа
-            $bot->sendMessage($message->getChat()->getId(), $lang['no_access']);
-            return false;
-        }
 
-    }, function () {
-        return true;
-    });
+            return true;
 
-    // подключаем базовые команды
-    require_once('base.php');
+        }, function () {
+            return true;
+        });
 
-    // подключаем контроллер отработки ответа на отзыв
-    require_once('comment.php');
+        /**
+         * Подключаем базовые команды
+         */
+        require_once('base.php');
 
-    // запуск бота
-    $bot->run();
+        /**
+         * Подключаем контроллер отработки ответа на отзыв
+         */
+        require_once('comment.php');
+
+        /**
+         * Запуск бота
+         */
+        $bot->run();
+    }
 
 } catch (Exception $e) {
     Logger::Exception($e);

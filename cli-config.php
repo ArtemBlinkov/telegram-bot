@@ -1,9 +1,20 @@
 <?php
 
-require_once __DIR__ . "/doctrine/bootstrap.php";
+require_once(__DIR__ . '/vendor/autoload.php');
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 
-global $entityManager;
+try {
 
-return ConsoleRunner::createHelperSet($entityManager);
+    $entityManager = Entity::getEntityManager();
+
+    ConsoleRunner::run(
+        new SingleManagerProvider($entityManager)
+    );
+
+}
+catch (Exception $e)
+{
+    Logger::Exception($e);
+}

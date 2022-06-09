@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd757e96125b7b8afefd207841e37c8a2e25ecd8d',
+    'reference' => '15701451885b8cd4da5083c6784f9125fe893a05',
     'name' => '__root__',
   ),
   'versions' => 
@@ -44,7 +44,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd757e96125b7b8afefd207841e37c8a2e25ecd8d',
+      'reference' => '15701451885b8cd4da5083c6784f9125fe893a05',
     ),
     'doctrine/annotations' => 
     array (
@@ -174,12 +174,12 @@ private static $installed = array (
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '2.2.1',
-      'version' => '2.2.1.0',
+      'pretty_version' => '2.2.2',
+      'version' => '2.2.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c94a94f120803a18554c1805ef2e539f8285f9a2',
+      'reference' => 'a119247127ff95789a2d95c347cd74721fbedaa4',
     ),
     'psr/cache' => 
     array (

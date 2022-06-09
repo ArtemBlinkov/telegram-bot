@@ -7,7 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+    'CommentRecord' => $baseDir . '/classes/CommentRecord.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'Entity' => $baseDir . '/classes/Entity.php',
     'JsonException' => $vendorDir . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
     'Lang' => $baseDir . '/classes/Lang.php',
     'Logger' => $baseDir . '/classes/Logger.php',

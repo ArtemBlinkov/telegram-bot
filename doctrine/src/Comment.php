@@ -22,17 +22,17 @@ class Comment
     /**
      * @ORM\Column(type="string")
      */
-    private $domain;
-
-    /**
-     * @ORM\Column(type="string")
-     */
     private $status;
 
     /**
      * @ORM\Column(type="string")
      */
     private $callback;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $delete;
 
     public function getId(): int
     {
@@ -47,16 +47,6 @@ class Comment
     public function setCommentId(int $id): void
     {
         $this->comment_id = $id;
-    }
-
-    public function getDomain(): string
-    {
-        return $this->domain;
-    }
-
-    public function setDomain(string $domain): void
-    {
-        $this->domain = $domain;
     }
 
     public function getStatus(): string
@@ -77,5 +67,15 @@ class Comment
     public function setCallback(string $callback): void
     {
         $this->callback = $callback;
+    }
+
+    public function getDelete(): string
+    {
+        return $this->delete;
+    }
+
+    public function setDelete(string $delete_url): void
+    {
+        $this->delete = $delete_url;
     }
 }

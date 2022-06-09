@@ -7,4 +7,6 @@ return [
     //-------------------------
     'undefined_command' => 'I don\'t know this command :(',
     //-------------------------
+    'wait_answer' => 'I\'m waiting for a comment. If you want to cancel this action, write "Cancel".',
+    //-------------------------
 ];

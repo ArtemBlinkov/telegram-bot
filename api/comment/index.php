@@ -20,8 +20,11 @@ try {
     //Получаем данные запроса
     $post = file_get_contents('php://input');
 
-    if ($data = $bot::jsonValidate($post, true))
+    if ($post)
     {
+        // Помещаем данные в массив
+        $data = $bot::jsonValidate($post, true);
+
         //Проверяем, что запрос пришёл с проверенного сайта
         if ($data['pass'] === PASS)
         {
@@ -31,18 +34,20 @@ try {
             //Создание шаблона сообщения формы обратной связи
             $template = new CommentTemplate($data, $lang);
 
+            // Добавляем запись в БД, получаем id
+            $db = new CommentRecord();
+            $id = $db->createComment($data);
+
             //Добавим клавиатуру
             $keyboard = new InlineKeyboardMarkup([
                 [
-                    ['text' => $lang['key-add'], 'switch_inline_query_current_chat' => '/answer ' . $data['domain'] . ':' . $data['id']],
-                    ['text' => $lang['key-delete'], 'switch_inline_query_current_chat' => '/delete ' . $data['domain'] . ':' . $data['id']]
+                    ['text' => $lang['key-add'], 'switch_inline_query_current_chat' => '/answer ' . '-:' . $id],
+                    ['text' => $lang['key-delete'], 'switch_inline_query_current_chat' => '/delete ' . '-:' . $id]
                 ]
             ]);
 
             //Отправляем сообщение
             $message = $bot->sendMessage(ME, $template->get(), 'Markdown',false, null, $keyboard);
-
-            //TODO:Если сообщение доставлено, сохраним в БД для ождидания ответа
 
             // Установим код ответа - 200 всё хорошо
             http_response_code(200);
