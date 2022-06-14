@@ -1,4 +1,5 @@
 <?php
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,12 +28,12 @@ class Comment
     /**
      * @ORM\Column(type="string")
      */
-    private $callback;
+    private $answer_url;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $delete;
+    private $delete_url;
 
     public function getId(): int
     {
@@ -59,23 +60,23 @@ class Comment
         $this->status = $status;
     }
 
-    public function getCallback(): string
+    public function getAnswerUrl(): string
     {
-        return $this->callback;
+        return $this->answer_url;
     }
 
-    public function setCallback(string $callback): void
+    public function setAnswerUrl(string $answer_url): void
     {
-        $this->callback = $callback;
+        $this->answer_url = $answer_url;
     }
 
-    public function getDelete(): string
+    public function getDeleteUrl(): string
     {
-        return $this->delete;
+        return $this->delete_url;
     }
 
     public function setDelete(string $delete_url): void
     {
-        $this->delete = $delete_url;
+        $this->delete_url = $delete_url;
     }
 }

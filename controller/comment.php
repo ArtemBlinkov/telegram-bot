@@ -49,7 +49,7 @@ $bot->command('delete', function ($message) use ($bot) {
 
     // стучимся в первоисточник и удаляем комментарий там
     $client = new Client();
-    $response = $client->request('POST', $comment->getDelete(), [
+    $response = $client->request('POST', $comment->getDeleteUrl(), [
         'body' => [
             'pass' => PASS,
             'id' => $comment->getCommentId()
@@ -70,7 +70,6 @@ $bot->command('delete', function ($message) use ($bot) {
         $lang = Lang::IncludeFile('other.php', $message->getFrom()->getLanguageCode());
         $bot->sendMessage($message->getChat()->getId(), $lang['error_comment']);
     }
-
 
 });
 
@@ -110,11 +109,13 @@ $bot->on(function (Update $update) use ($bot) {
         {
             // стучимся в первоисточник и отправляем ответ туда
             $client = new Client();
-            $response = $client->request('POST', $comment->getCallback(), [
+            $response = $client->request('POST', $comment->getAnswerUrl(), [
                 'body' => [
                     'pass' => PASS,
-                    'id' => $comment->getCommentId(),
-                    'body' => $message->getText()
+                    'ReviewForm' => [
+                        'parent' => $comment->getCommentId(),
+                        'body' => $message->getText()
+                    ]
                 ]
             ]);
             Logger::Debug($response);

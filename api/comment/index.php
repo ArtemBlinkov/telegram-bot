@@ -14,14 +14,14 @@ use TelegramBot\Api\BotApi,
 
 try {
 
-    //Создаём экземпляр бота
-    $bot = new BotApi(APIKEY);
-
     //Получаем данные запроса
     $post = file_get_contents('php://input');
 
     if ($post)
     {
+        //Создаём экземпляр бота
+        $bot = new BotApi(APIKEY);
+
         // Помещаем данные в массив
         $data = $bot::jsonValidate($post, true);
 
@@ -53,7 +53,7 @@ try {
             http_response_code(200);
 
             // Возвращаем ответ
-            echo json_encode(["message" => "Ok", "id" => $message->getMessageId()]);
+            echo json_encode(["message" => "ok", "id" => $message->getMessageId()]);
         }
         else
         {
@@ -61,7 +61,7 @@ try {
             http_response_code(400);
 
             // Возвращаем ответ
-            echo json_encode(["message" => "Pass wrong!", "pass" => $data['pass']]);
+            echo json_encode(["message" => "Authorization failed!"]);
         }
     }
 

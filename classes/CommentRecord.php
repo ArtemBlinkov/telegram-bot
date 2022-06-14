@@ -64,7 +64,7 @@ class CommentRecord
         // записываем данные из массива
         $this->doctrine->setCommentId($data['id']);
         $this->doctrine->setDelete($data['callback']['delete']);
-        $this->doctrine->setCallback($data['callback']['answer']);
+        $this->doctrine->setAnswerUrl($data['callback']['answer']);
 
         // присваиваем первичный статус
         $this->doctrine->setStatus($this->status['NEW']);
