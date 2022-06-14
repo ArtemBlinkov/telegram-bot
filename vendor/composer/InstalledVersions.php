@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '15701451885b8cd4da5083c6784f9125fe893a05',
+    'reference' => 'a56f57f16de4f6d305f8bb04f30ee2e4bffe890c',
     'name' => '__root__',
   ),
   'versions' => 
@@ -44,7 +44,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '15701451885b8cd4da5083c6784f9125fe893a05',
+      'reference' => 'a56f57f16de4f6d305f8bb04f30ee2e4bffe890c',
     ),
     'doctrine/annotations' => 
     array (
@@ -156,12 +156,12 @@ private static $installed = array (
     ),
     'guzzlehttp/guzzle' => 
     array (
-      'pretty_version' => '7.4.3',
-      'version' => '7.4.3.0',
+      'pretty_version' => '7.4.4',
+      'version' => '7.4.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '74a8602c6faec9ef74b7a9391ac82c5e65b1cdab',
+      'reference' => 'e3ff079b22820c2029d4c2a87796b6a0b8716ad8',
     ),
     'guzzlehttp/promises' => 
     array (
@@ -174,12 +174,12 @@ private static $installed = array (
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '2.2.2',
-      'version' => '2.2.2.0',
+      'pretty_version' => '2.3.0',
+      'version' => '2.3.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a119247127ff95789a2d95c347cd74721fbedaa4',
+      'reference' => '83260bb50b8fc753c72d14dc1621a2dac31877ee',
     ),
     'psr/cache' => 
     array (
