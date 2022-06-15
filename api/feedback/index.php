@@ -9,35 +9,49 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 require_once(__DIR__ . '/../../vendor/autoload.php');
 
 use TelegramBot\Api\BotApi,
-    Templates\FeedbackTemplate;
+    Templates\FeedbackTemplate,
+    TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 
 try {
-
-    //Создаём экземпляр бота
-    $bot = new BotApi(APIKEY);
 
     //Получаем данные запроса
     $post = file_get_contents('php://input');
 
-    if ($data = $bot::jsonValidate($post, true))
+    if ($post)
     {
+        //Создаём экземпляр бота
+        $bot = new BotApi(APIKEY);
+
+        // Помещаем данные в массив
+        $data = $bot::jsonValidate($post, true);
+
         //Проверяем, что запрос пришёл с проверенного сайта
         if ($data['pass'] === PASS)
         {
-            //Подключение языкового файла
+            // подключение языкового файла
             $lang = Lang::IncludeFile('form.php', $data['lang'] ?? LANG);
 
-            //Создание шаблона сообщения формы обратной связи
+            // создание шаблона сообщения формы обратной связи
             $template = new FeedbackTemplate($data, $lang);
 
-            //Отправляем сообщение
-            $message = $bot->sendMessage(ME, $template->get(), 'Markdown');
+            if (isset($data['email']))
+            {
+                // если есть почта, то добавим ссылку на ответ о почте
+                $keyboard = new InlineKeyboardMarkup([
+                    [
+                        ['text' => $lang['key-add'], 'url' => 'mailto:' . $data['email']]
+                    ]
+                ]);
+            }
+
+            // Отправляем сообщение
+            $message = $bot->sendMessage(ME, $template->get(), 'Markdown',false, null, $keyboard ?? []);
 
             // Установим код ответа - 200 всё хорошо
             http_response_code(200);
 
             // Возвращаем ответ
-            echo json_encode(["message" => "Ok", "id" => $message->getMessageId()]);
+            echo json_encode(["message" => "ok", "id" => $message->getMessageId()]);
         }
         else
         {
@@ -45,7 +59,7 @@ try {
             http_response_code(400);
 
             // Возвращаем ответ
-            echo json_encode(["message" => "Pass wrong!", "pass" => $data['pass']]);
+            echo json_encode(["message" => "Authorization failed!"]);
         }
     }
 
