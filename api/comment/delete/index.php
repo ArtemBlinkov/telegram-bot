@@ -26,11 +26,14 @@ try {
         // проверяем, что запрос пришёл с проверенного сайта
         if ($data['pass'] === PASS)
         {
-            // удаляем запись из бд
+            // получаем запись из бд
             $db = new CommentRecord();
 
-            if ($db->deleteComment($data['id']))
+            if ($comment = $db->getCommentByParent($data['id']))
             {
+                // удаляем запись из бд
+                $db->deleteComment($comment->getId());
+
                 // Установим код ответа - 200 всё хорошо
                 http_response_code(200);
 

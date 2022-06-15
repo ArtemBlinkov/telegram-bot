@@ -54,6 +54,26 @@ class CommentRecord
     }
 
     /**
+     * @param $id
+     * @return false|object
+     */
+    public function getCommentByParent($id)
+    {
+        // получаем запись по id
+        $comment = $this->entity
+            ->getRepository('Comment')
+            ->findOneBy(['comment_id' => $id]);
+
+        // возвращаем запись или возвращаем false
+        if ($comment) {
+            return $comment;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
      * @param $data
      * @return int
      * @throws \Doctrine\ORM\Exception\ORMException

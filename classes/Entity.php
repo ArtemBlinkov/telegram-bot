@@ -21,7 +21,7 @@ class Entity
         ];
 
         // поставить true для возможности управление через командную строку
-        $isDevMode = false;
+        $isDevMode = true;
 
         $proxyDir = null;
         $cache = null;

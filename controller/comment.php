@@ -71,6 +71,7 @@ $bot->command('delete', function ($message) use ($bot) {
         }
         else
         {
+            Logger::Debug($response);
             // отправим сообщение об ошибке
             $lang = Lang::IncludeFile('other.php', $message->getFrom()->getLanguageCode());
             $bot->sendMessage($message->getChat()->getId(), $lang['error_comment']);
@@ -144,6 +145,7 @@ $bot->on(function (Update $update) use ($bot) {
             }
             else
             {
+                Logger::Debug($response);
                 // отправим сообщение об ошибке
                 $bot->sendMessage($message->getChat()->getId(), $lang['error_comment']);
             }
