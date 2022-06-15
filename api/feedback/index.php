@@ -9,8 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 require_once(__DIR__ . '/../../vendor/autoload.php');
 
 use TelegramBot\Api\BotApi,
-    Templates\FeedbackTemplate,
-    TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
+    Templates\FeedbackTemplate;
 
 try {
 
@@ -34,18 +33,8 @@ try {
             // создание шаблона сообщения формы обратной связи
             $template = new FeedbackTemplate($data, $lang);
 
-            if (isset($data['email']))
-            {
-                // если есть почта, то добавим ссылку на ответ о почте
-                $keyboard = new InlineKeyboardMarkup([
-                    [
-                        ['text' => $lang['key-add'], 'url' => 'mailto:' . $data['email']]
-                    ]
-                ]);
-            }
-
             // Отправляем сообщение
-            $message = $bot->sendMessage(ME, $template->get(), 'Markdown',false, null, $keyboard ?? []);
+            $message = $bot->sendMessage(ME, $template->get(), 'Markdown');
 
             // Установим код ответа - 200 всё хорошо
             http_response_code(200);
