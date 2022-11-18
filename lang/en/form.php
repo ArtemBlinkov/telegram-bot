@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title' => '*Message from the feedback form :*',
+    'title' => 'Message from the feedback form:',
     //-------------------------
     'email' => '*E-mail: *',
     //-------------------------

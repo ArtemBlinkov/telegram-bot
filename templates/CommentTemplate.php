@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Templates;
 
 use TelegramBot\Api\Exception;
@@ -14,33 +13,25 @@ class CommentTemplate extends Template
      * @param $lang - данные языкового файла
      * @throws Exception
      */
-
     public function __construct($input, $lang)
     {
         $this->add_title($input, $lang);
         $this->add_name($input, $lang);
+        $this->add_email($input, $lang);
         $this->add_body($input, $lang);
     }
 
     /**
-     * Добавляет имя отправителя к шаблону
+     * Добавляет e-mail отправителя к шаблону
      * @param $input - данные POST
      * @param $lang - данные языкового файла
-     * @throws Exception
      */
-
-    protected function add_name($input, $lang)
+    protected function add_email($input, $lang)
     {
-        if (isset($input['name']))
-        {
-            // установим имя написавшего
-            $this->template .= $lang['name'] . $input['name'] . PHP_EOL;
-        }
-        else
-        {
-            // сообщим об ошибке
-            $this->report_a_bug($input, $lang, 'name');
+        if (isset($input['email'])) {
+            // установим электронный адрес написавшего
+            $this->template .=
+                $lang['email'] . $input['email'] . PHP_EOL;
         }
     }
-
 }

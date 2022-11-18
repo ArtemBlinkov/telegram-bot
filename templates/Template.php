@@ -6,15 +6,15 @@ use TelegramBot\Api\Exception;
 
 class Template
 {
+    const SMILE = '🔹';
 
-    public $template = '';
+    protected string $template = '';
 
     /**
      * Возвращает готовый шаблон сообщения
      * @return string
      */
-
-    public function get() : string
+    public function get(): string
     {
         return $this->template;
     }
@@ -24,14 +24,37 @@ class Template
      * @param $input - данные POST
      * @param $lang - данные языкового файла
      */
-
     protected function add_title($input, $lang)
     {
-        // установим ip адрес или домен сервера, с котрого пришло сообщение
-        $this->template .= $input['domain'] ?? $_SERVER['REMOTE_ADDR'];
+        // определим домен
+        $domain = $input['domain'] ?? $_SERVER['REMOTE_ADDR'];
+
+        // добавим эмодзи в начало сообщения
+        $this->template .= self::SMILE;
 
         // установим заголовок сообщения
-        $this->template .= ' - ' . $lang['title'] . PHP_EOL . PHP_EOL;
+        $this->template .= " [{$lang['title']}]";
+
+        // установим ip адрес или домен сервера, с котрого пришло сообщение
+        $this->template .= "($domain)" . PHP_EOL . PHP_EOL;
+    }
+
+    /**
+     * Добавляет имя отправителя к шаблону
+     * @param $input - данные POST
+     * @param $lang - данные языкового файла
+     * @throws Exception
+     */
+    protected function add_name($input, $lang)
+    {
+        if (isset($input['name'])) {
+            // установим имя написавшего
+            $this->template .=
+                $lang['name'] . $input['name'] . PHP_EOL;
+        } else {
+            // сообщим об ошибке
+            $this->report_a_bug($input, $lang, 'name');
+        }
     }
 
     /**
@@ -40,16 +63,13 @@ class Template
      * @param $lang - данные языкового файла
      * @throws Exception
      */
-
     protected function add_body($input, $lang)
     {
-        if (isset($input['body']))
-        {
+        if (isset($input['body'])) {
             // установим тело сообщения
-            $this->template .= PHP_EOL . $lang['body'] . PHP_EOL . '_"' . $input['body'] . '"_' . PHP_EOL;
-        }
-        else
-        {
+            $this->template .=
+                PHP_EOL . $lang['body'] . PHP_EOL . "```{$input['body']}```" . PHP_EOL;
+        } else {
             // сообщим об ошибке
             $this->report_a_bug($input, $lang, 'body');
         }
@@ -62,7 +82,6 @@ class Template
      * @param $field_name - название поля
      * @throws Exception
      */
-
     protected function report_a_bug($input, $lang, $field_name)
     {
         // установим код ответа - 404 сообщение не найдено
@@ -74,5 +93,4 @@ class Template
         // бросаем исключение  - обязательный параметр не заполнен
         throw new Exception($field_name . $lang['error']);
     }
-
 }
