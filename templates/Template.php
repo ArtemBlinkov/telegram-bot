@@ -2,12 +2,15 @@
 
 namespace Templates;
 
-use TelegramBot\Api\Exception;
+use Exception;
 
 class Template
 {
-    const SMILE = '🔹';
+    public const SMILE = '🔹';
 
+    /**
+     * @var string
+     */
     protected string $template = '';
 
     /**
@@ -24,7 +27,7 @@ class Template
      * @param $input - данные POST
      * @param $lang - данные языкового файла
      */
-    protected function add_title($input, $lang)
+    protected function addTitle($input, $lang)
     {
         // определим домен
         $domain = $input['domain'] ?? $_SERVER['REMOTE_ADDR'];
@@ -45,15 +48,12 @@ class Template
      * @param $lang - данные языкового файла
      * @throws Exception
      */
-    protected function add_name($input, $lang)
+    protected function addName($input, $lang)
     {
         if (isset($input['name'])) {
-            // установим имя написавшего
-            $this->template .=
-                $lang['name'] . $input['name'] . PHP_EOL;
+            $this->template .= $lang['name'] . $input['name'] . PHP_EOL;
         } else {
-            // сообщим об ошибке
-            $this->report_a_bug($input, $lang, 'name');
+            $this->reportBug($input, $lang, 'name');
         }
     }
 
@@ -63,15 +63,12 @@ class Template
      * @param $lang - данные языкового файла
      * @throws Exception
      */
-    protected function add_body($input, $lang)
+    protected function addBody($input, $lang)
     {
         if (isset($input['body'])) {
-            // установим тело сообщения
-            $this->template .=
-                PHP_EOL . $lang['body'] . PHP_EOL . "```{$input['body']}```" . PHP_EOL;
+            $this->template .= PHP_EOL . implode(PHP_EOL, [$lang['body'], "```", $input['body'], "```"]) . PHP_EOL;
         } else {
-            // сообщим об ошибке
-            $this->report_a_bug($input, $lang, 'body');
+            $this->reportBug($input, $lang, 'body');
         }
     }
 
@@ -82,15 +79,10 @@ class Template
      * @param $field_name - название поля
      * @throws Exception
      */
-    protected function report_a_bug($input, $lang, $field_name)
+    protected function reportBug($input, $lang, $field_name)
     {
-        // установим код ответа - 404 сообщение не найдено
         http_response_code(404);
-
-        // отправим ответ
         echo json_encode(["message" => $field_name . $lang['error'], "data" => $input]);
-
-        // бросаем исключение  - обязательный параметр не заполнен
         throw new Exception($field_name . $lang['error']);
     }
 }

@@ -1,12 +1,16 @@
 <?php
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\TransactionRequiredException;
+
 class CommentRecord
 {
-
     /**
      * @var string[]
      */
-    protected $status = [
+    protected array $status = [
         'NEW' => 'NOT_ANSWERED',
         'PROCESS' => 'WAIT'
     ];
@@ -14,20 +18,20 @@ class CommentRecord
     /**
      * @var Comment
      */
-    protected $doctrine;
+    protected Comment $doctrine;
+
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
-    protected $entity;
+    protected EntityManager $entity;
 
     /**
      * CommentRecord constructor.
      * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws ORMException
      */
     public function __construct()
     {
-        // помещаем модели БД в класс
         $this->entity = Entity::getEntityManager();
         $this->doctrine = new Comment();
     }
@@ -35,20 +39,17 @@ class CommentRecord
     /**
      * @param $id
      * @return false|object
-     * @throws \Doctrine\ORM\Exception\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws TransactionRequiredException
      */
     public function getComment($id)
     {
-        // получаем запись по id
         $comment = $this->entity->find('Comment', $id);
 
-        // возвращаем запись или возвращаем false
         if ($comment) {
             return $comment;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -59,16 +60,13 @@ class CommentRecord
      */
     public function getCommentByParent($id)
     {
-        // получаем запись по id
         $comment = $this->entity
             ->getRepository('Comment')
             ->findOneBy(['comment_id' => $id]);
 
-        // возвращаем запись или возвращаем false
         if ($comment) {
             return $comment;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -76,10 +74,10 @@ class CommentRecord
     /**
      * @param $data
      * @return int
-     * @throws \Doctrine\ORM\Exception\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function createComment($data) : int
+    public function createComment($data): int
     {
         // записываем данные из массива
         $this->doctrine->setCommentId($data['id']);
@@ -120,52 +118,41 @@ class CommentRecord
      * @param $id
      * @param string $status
      * @return bool
-     * @throws \Doctrine\ORM\Exception\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws TransactionRequiredException
      */
-    public function updateComment($id, $status = 'PROCESS') : bool
+    public function updateComment($id, $status = 'PROCESS'): bool
     {
-        // получаем запись по id
         $comment = $this->entity->find('Comment', $id);
 
-        // меняем статус или возвращаем false
         if ($comment) {
             $comment->setStatus($this->status[$status]);
         } else {
             return false;
         }
 
-        // исполняем запрос
         $this->entity->flush();
 
-        // возвращаем ответ
         return true;
     }
 
     /**
      * @param $id
      * @return bool
-     * @throws \Doctrine\ORM\Exception\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws TransactionRequiredException
      */
-    public function deleteComment($id) : bool
+    public function deleteComment($id): bool
     {
-        // получаем запись по id
         $comment = $this->entity->find('Comment', $id);
 
         if ($comment) {
-            // удаляем запись
             $this->entity->remove($comment);
-
-            // исполняем запрос
             $this->entity->flush();
-
-            // возвращаем ответ
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

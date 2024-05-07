@@ -1,37 +1,27 @@
 <?php
 
-require_once(__DIR__ . '/../vendor/autoload.php');
+use Exception as DefaultException;
+use TelegramBot\Api\Client;
+use TelegramBot\Api\Exception;
+use TelegramBot\Api\Types\Update;
 
-use TelegramBot\Api\Client,
-    TelegramBot\Api\Exception,
-    TelegramBot\Api\Types\Update;
-
+/**
+ * Исполнение чат-бота
+ */
 try {
-
-    /**
-     * Исполнение чат-бота
-     */
-
-    // инициализация телеграмм бота
     $bot = new Client(APIKEY);
 
-    // проверяем данные post на наличие
-    if ($bot->getRawBody())
-    {
-        /**
-         * Обработка прав доступа и ошибок, уникальных ответов
-         */
-        $bot->on(function (Update $update) use ($bot)
-        {
+    if ($bot->getRawBody()) {
+        /** Обработка прав доступа и ошибок, уникальных ответов */
+        $bot->on(function (Update $update) use ($bot) {
             // получаем данные от телеграмма
             $message = $update->getMessage();
 
             // подключение языкового файла
-            $lang = Lang::IncludeFile('main.php', $message->getFrom()->getLanguageCode());
+            $lang = Lang::includeFile('main.php', $message->getFrom()->getLanguageCode());
 
             // проверяем, что команды поступают от меня
-            if ($message->getFrom()->getId() == ME)
-            {
+            if ($message->getFrom()->getId() == ME) {
                 // проверяем запрос на наличие команды (синтаксис)
                 preg_match(Client::REGEXP, $message->getText(), $matches);
 
@@ -39,45 +29,33 @@ try {
                 $db = new CommentRecord();
 
                 // если в запросе нет команды - отправить ошибку
-                if (empty($matches))
-                {
+                if (empty($matches)) {
                     // проверяем, что в данный момент нет комментариев, ожидающих ответа и выводим ошибку
-                    if (!$db->checkComment())
-                    {
+                    if (!$db->checkComment()) {
                         $bot->sendMessage($message->getChat()->getId(), $lang['empty_command']);
                         return false;
                     }
-                }
-                else
-                {
+                } elseif ($db->checkComment()) {
                     // проверям комментарии в бд, если есть комментарии со статусом wait, игнорируем другие команды и ждём ответа
-                    if ($db->checkComment())
-                    {
-                        $bot->sendMessage($message->getChat()->getId(), $lang['wait_answer']);
+                    $bot->sendMessage($message->getChat()->getId(), $lang['wait_answer']);
+                    return false;
+                } else {
+                    // получаем список команд из языкового файла
+                    $command = Lang::includeFile('command.php', $message->getFrom()->getLanguageCode());
+
+                    // ищем команду в массиве, если её нет, отправляем ошибку
+                    if (!$command[$matches[1]]) {
+                        $bot->sendMessage($message->getChat()->getId(), $lang['undefined_command']);
                         return false;
                     }
-                    else
-                    {
-                        // получаем список команд из языкового файла
-                        $command = Lang::IncludeFile('command.php', $message->getFrom()->getLanguageCode());
-
-                        // ищем команду в массиве, если её нет, отправляем ошибку
-                        if (!$command[$matches[1]]) {
-                            $bot->sendMessage($message->getChat()->getId(), $lang['undefined_command']);
-                            return false;
-                        }
-                    }
                 }
-            }
-            else
-            {
+            } else {
                 // отправляем сообщение об ошибке доступа
                 $bot->sendMessage($message->getChat()->getId(), $lang['no_access']);
                 return false;
             }
 
             return true;
-
         }, function () {
             return true;
         });
@@ -97,7 +75,6 @@ try {
          */
         $bot->run();
     }
-
-} catch (Exception $e) {
-    Logger::Exception($e);
+} catch (DefaultException | Exception $e) {
+    Logger::exception($e);
 }
