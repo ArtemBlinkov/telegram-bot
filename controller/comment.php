@@ -44,16 +44,14 @@ $bot->command('delete', function ($message) use ($bot) {
         // если запись есть в БД, то стучимся в первоисточник и удаляем комментарий там
         $client = new Client();
         $response = $client->post($comment->getDeleteUrl(), [
-            'form_params' => [
-                'pass' => PASS,
-                'id' => $comment->getCommentId()
-            ]
+            'pass' => PASS,
+            'id' => $comment->getCommentId()
         ]);
 
         // форматируем ответ
         $response = json_decode($response->getBody()->getContents(), true);
 
-        if ($response == 'ok') {
+        if ($response['status'] == 'ok') {
             // если запись успешно удалена в первоисточнике, удаляем в локальной БД
             $db->deleteComment($id);
 
@@ -102,19 +100,15 @@ $bot->on(function (Update $update) use ($bot) {
             // стучимся в первоисточник и отправляем ответ туда
             $client = new Client();
             $response = $client->post($comment->getAnswerUrl(), [
-                'form_params' => [
-                    'pass' => PASS,
-                    'ReviewForm' => [
-                        'parent' => $comment->getCommentId(),
-                        'body' => $message->getText()
-                    ]
-                ]
+                'pass' => PASS,
+                'parent' => $comment->getCommentId(),
+                'body' => $message->getText()
             ]);
 
             // форматируем ответ
             $response = json_decode($response->getBody()->getContents(), true);
 
-            if (trim($response) == 'ok') {
+            if ($response['status'] == 'ok') {
                 // если ответ успешно доставлен в первоисточник, то удалить запись из локальной БД
                 $db->deleteComment($comment->getId());
 
